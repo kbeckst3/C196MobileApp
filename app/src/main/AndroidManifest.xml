@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.C196CoursePlanner">
         <activity
-            android:name=".CourseActivity"
-            android:label="@string/title_activity_course"
+            android:name=".CourseInfo"
+            android:label="@string/title_activity_course_info"
             android:theme="@style/Theme.C196CoursePlanner.NoActionBar"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -23,12 +23,18 @@
         <activity
             android:name=".TermActivity"
             android:label="@string/title_activity_term"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
         <activity
             android:name=".TermDetail"
             android:label="Term Detail"
+            android:parentActivityName=".TermActivity" />
+        <activity
+            android:name=".CourseActivity"
+            android:label="@string/title_activity_course"
             android:parentActivityName=".TermActivity"
             android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
+        <activity android:name=".CourseDetail"></activity>
     </application>
 
 </manifest>

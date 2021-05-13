@@ -7,13 +7,25 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.c196_courseplanner.DAO.AssessmentEntityDAO;
+import com.example.c196_courseplanner.DAO.CourseEntityDAO;
+import com.example.c196_courseplanner.DAO.CourseInstructorEntityDAO;
+import com.example.c196_courseplanner.DAO.CourseNoteEntityDAO;
 import com.example.c196_courseplanner.DAO.TermEntityDAO;
+import com.example.c196_courseplanner.Models.Assessment;
+import com.example.c196_courseplanner.Models.Course;
+import com.example.c196_courseplanner.Models.CourseInstructor;
+import com.example.c196_courseplanner.Models.CourseNote;
 import com.example.c196_courseplanner.Models.Term;
 
 
-@Database(entities = {Term.class}, version = 2, exportSchema = false)
+@Database(entities = {Assessment.class, Course.class, CourseInstructor.class, CourseNote.class, Term.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     //Program DAOs
+    public abstract AssessmentEntityDAO assessmentEntityDAO();
+    public abstract CourseEntityDAO courseEntityDAO();
+    public abstract CourseInstructorEntityDAO courseInstructorEntityDAO();
+    public abstract CourseNoteEntityDAO courseNoteEntityDAO();
     public abstract TermEntityDAO termEntityDAO();
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();

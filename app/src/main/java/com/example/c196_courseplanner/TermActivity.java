@@ -3,11 +3,9 @@ package com.example.c196_courseplanner;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.c196_courseplanner.Models.Term;
 import com.example.c196_courseplanner.UI.TermAdapter;
 import com.example.c196_courseplanner.database.AppRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +28,7 @@ public class TermActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.courseAdder);
+        FloatingActionButton fab = findViewById(R.id.termAdder);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

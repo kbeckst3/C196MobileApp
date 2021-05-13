@@ -3,6 +3,7 @@ package com.example.c196_courseplanner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.c196_courseplanner.Models.Term;
 import com.example.c196_courseplanner.database.AppRepository;
@@ -22,10 +24,11 @@ import java.util.Objects;
 
 public class TermDetail extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputEditText mTitle;
-    private static EditText mStartDate;
-    private static EditText mEndDate;
-    private Button mSaveTerm;
+    private TextInputEditText termTitleView;
+    @SuppressLint("StaticFieldLeak")
+    private static EditText termStartDateView;
+    @SuppressLint("StaticFieldLeak")
+    private static EditText termEditDateView;
 
     public static DatePickerDialogFragment mDatePickerDialogFragment;
     private AppRepository appRepository;
@@ -41,26 +44,31 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
 
         appRepository = new AppRepository(getApplicationContext());
 
-        mTitle = findViewById(R.id.termTitle);
-        mStartDate = (EditText) findViewById(R.id.termStartField);
-        mEndDate = (EditText) findViewById(R.id.termEndField);
-        mSaveTerm = (Button) findViewById(R.id.saveTerm);
+        termTitleView = findViewById(R.id.termTitle);
+        termStartDateView = findViewById(R.id.termStartField);
+        termEditDateView = findViewById(R.id.termEndField);
+        ImageView termStartCalendar = findViewById(R.id.termStartCalendar);
+        ImageView termEndCalendar = findViewById(R.id.termEndCalendar);
+        Button termSaveButton = findViewById(R.id.saveTerm);
         mDatePickerDialogFragment = new DatePickerDialogFragment();
-        mStartDate.setOnClickListener((View.OnClickListener) this);
-        mEndDate.setOnClickListener((View.OnClickListener) this);
-        mSaveTerm.setOnClickListener((View.OnClickListener) this);
+        //Set On Click Listeners
+        termStartDateView.setOnClickListener(this);
+        termStartCalendar.setOnClickListener(this);
+        termEditDateView.setOnClickListener(this);
+        termEndCalendar.setOnClickListener(this);
+        termSaveButton.setOnClickListener(this);
 
         //Grabbing intent Extras for editing Term
         termID = getIntent().getIntExtra("termID", -1);
-        String termEditTitle = getIntent().getStringExtra("termTitle");
-        String termEditStartDate = getIntent().getStringExtra("termStartDate");
-        String termEditEndDate = getIntent().getStringExtra("termEndDate");
+        String termTitle = getIntent().getStringExtra("termTitle");
+        String termStartDate = getIntent().getStringExtra("termStartDate");
+        String termEndDate = getIntent().getStringExtra("termEndDate");
 
         if(termID != -1)
         {
-            mTitle.setText(termEditTitle);
-            mStartDate.setText(termEditStartDate);
-            mEndDate.setText(termEditEndDate);
+            termTitleView.setText(termTitle);
+            termStartDateView.setText(termStartDate);
+            termEditDateView.setText(termEndDate);
         }
 
     }
@@ -68,18 +76,18 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.termStartField) {
+        if (id == R.id.termStartField || id == R.id.termStartCalendar) {
             mDatePickerDialogFragment.setFlag(DatePickerDialogFragment.FLAG_START_DATE);
             mDatePickerDialogFragment.show(getSupportFragmentManager(), "datePicker");
-        } else if (id == R.id.termEndField) {
+        } else if (id == R.id.termEndField || id == R.id.termEndCalendar) {
             mDatePickerDialogFragment.setFlag(DatePickerDialogFragment.FLAG_END_DATE);
             mDatePickerDialogFragment.show(getSupportFragmentManager(), "datePicker");
         } else if (id == R.id.saveTerm) {
             Term mTerm;
             if (termID == -1) {
-                 mTerm = new Term(Objects.requireNonNull(mTitle.getText()).toString(), mStartDate.getText().toString(), mEndDate.getText().toString());
+                 mTerm = new Term(Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
             } else {
-                 mTerm = new Term(termID, Objects.requireNonNull(mTitle.getText()).toString(), mStartDate.getText().toString(), mEndDate.getText().toString());
+                 mTerm = new Term(termID, Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
             }
             if(!mTerm.getTitle().isEmpty()) {
                 appRepository.insertTerm(mTerm);
@@ -116,9 +124,9 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
             calendar.set(year, monthOfYear, dayOfMonth);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             if (flag == FLAG_START_DATE) {
-                mStartDate.setText(format.format(calendar.getTime()));
+                termStartDateView.setText(format.format(calendar.getTime()));
             } else if (flag == FLAG_END_DATE) {
-                mEndDate.setText(format.format(calendar.getTime()));
+                termEditDateView.setText(format.format(calendar.getTime()));
             }
         }
 

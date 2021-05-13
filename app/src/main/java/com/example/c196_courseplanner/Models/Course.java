@@ -17,25 +17,36 @@ public class Course {
     private String endDate;
     @ColumnInfo(name = "status")
     private String status;
-    @ColumnInfo(name = "courseInstructor")
-    private int courseInstructorID;
+    @ColumnInfo(name = "associated_course_instructor_id")
+    private int associatedCourseInstructorId;
+    @ColumnInfo(name = "associated_term_id")
+    private int associatedTermId;
 
     @Ignore
-    public Course(String title, String startDate, String endDate, String status, int courseInstructorID) {
+    public Course(String title, String startDate, String endDate, int associatedTermId) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.status = status;
-        this.courseInstructorID = courseInstructorID;
+        this.associatedTermId = associatedTermId;
     }
 
-    public Course(int id, String title, String startDate, String endDate, String status, int courseInstructorID) {
+    @Ignore
+    public Course(int id, String title, String startDate, String endDate, int associatedTermId) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.associatedTermId = associatedTermId;
+    }
+
+    public Course(int id, String title, String startDate, String endDate, String status, int associatedCourseInstructorId, int associatedTermId) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.courseInstructorID = courseInstructorID;
+        this.associatedCourseInstructorId = associatedCourseInstructorId;
+        this.associatedTermId = associatedTermId;
     }
 
     public int getId() {
@@ -78,11 +89,19 @@ public class Course {
         this.status = status;
     }
 
-    public int getCourseInstructorID() {
-        return courseInstructorID;
+    public int getAssociatedCourseInstructorId() {
+        return associatedCourseInstructorId;
     }
 
-    public void setCourseInstructorID(int courseInstructorID) {
-        this.courseInstructorID = courseInstructorID;
+    public void setAssociatedCourseInstructorId(int associatedCourseInstructorId) {
+        this.associatedCourseInstructorId = associatedCourseInstructorId;
+    }
+
+    public int getAssociatedTermId() {
+        return associatedTermId;
+    }
+
+    public void setAssociatedTermId(int associatedTermId) {
+        this.associatedTermId = associatedTermId;
     }
 }
