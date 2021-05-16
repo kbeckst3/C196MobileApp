@@ -1,5 +1,6 @@
 package com.example.c196_courseplanner.Models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -61,4 +62,8 @@ public class CourseInstructor {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @NonNull
+    @Override
+    public String toString() {return getFullName();}
 }

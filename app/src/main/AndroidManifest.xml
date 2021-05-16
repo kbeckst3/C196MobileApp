@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.C196CoursePlanner">
+        <activity android:name=".AssessmentDetail"></activity>
+        <activity android:name=".CourseNoteDetail" />
         <activity
             android:name=".CourseInfo"
             android:label="@string/title_activity_course_info"
-            android:theme="@style/Theme.C196CoursePlanner.NoActionBar"></activity>
+            android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +36,7 @@
             android:label="@string/title_activity_course"
             android:parentActivityName=".TermActivity"
             android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
-        <activity android:name=".CourseDetail"></activity>
+        <activity android:name=".CourseDetail" />
     </application>
 
 </manifest>

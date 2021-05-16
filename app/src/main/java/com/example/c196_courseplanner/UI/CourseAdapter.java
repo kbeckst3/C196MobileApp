@@ -38,10 +38,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     int position = getAdapterPosition();
                     final Course current = mCourses.get(position);
                     Intent intent = new Intent(context, CourseDetail.class);
-                    intent.putExtra("courseID", current.getId());
+                    intent.putExtra("courseId", current.getId());
                     intent.putExtra("courseTitle", current.getTitle());
                     intent.putExtra("courseStartDate", current.getStartDate());
                     intent.putExtra("courseEndDate", current.getEndDate());
+                    intent.putExtra("courseStatus", current.getStatus());
                     intent.putExtra("currentTermId", current.getAssociatedTermId());
                     intent.putExtra("position", position);
                     context.startActivity(intent);
@@ -53,10 +54,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     int position = getAdapterPosition();
                     final Course current = mCourses.get(position);
                     Intent intent = new Intent(context, CourseInfo.class);
-                    intent.putExtra("courseID", current.getId());
+                    intent.putExtra("courseId", current.getId());
                     intent.putExtra("courseTitle", current.getTitle());
                     intent.putExtra("courseStartDate", current.getStartDate());
                     intent.putExtra("courseEndDate", current.getEndDate());
+                    intent.putExtra("courseStatus", current.getStatus());
                     intent.putExtra("currentTermId", current.getAssociatedTermId());
                     intent.putExtra("position", position);
                     context.startActivity(intent);

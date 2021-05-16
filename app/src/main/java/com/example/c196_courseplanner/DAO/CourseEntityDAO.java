@@ -30,4 +30,7 @@ public interface CourseEntityDAO {
 
     @Query("Delete From course_table")
     void deleteAllCourses();
+
+    @Query("Update course_table Set associated_course_instructor_id = :instructorId Where id = :id ")
+    void addCourseInstructorToCourse(int instructorId, int id);
 }

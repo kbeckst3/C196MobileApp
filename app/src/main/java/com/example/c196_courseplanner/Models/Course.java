@@ -23,19 +23,21 @@ public class Course {
     private int associatedTermId;
 
     @Ignore
-    public Course(String title, String startDate, String endDate, int associatedTermId) {
+    public Course(String title, String startDate, String endDate, String status, int associatedTermId) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
         this.associatedTermId = associatedTermId;
     }
 
     @Ignore
-    public Course(int id, String title, String startDate, String endDate, int associatedTermId) {
+    public Course(int id, String title, String startDate, String endDate, String status, int associatedTermId) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
         this.associatedTermId = associatedTermId;
     }
 
@@ -103,5 +105,18 @@ public class Course {
 
     public void setAssociatedTermId(int associatedTermId) {
         this.associatedTermId = associatedTermId;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", status='" + status + '\'' +
+                ", associatedCourseInstructorId=" + associatedCourseInstructorId +
+                ", associatedTermId=" + associatedTermId +
+                '}';
     }
 }

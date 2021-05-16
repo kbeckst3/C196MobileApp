@@ -10,17 +10,25 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.example.c196_courseplanner.Models.Course;
+import com.example.c196_courseplanner.Models.CourseInstructor;
 import com.example.c196_courseplanner.Models.Term;
 import com.example.c196_courseplanner.database.AppRepository;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class CourseDetail extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +36,7 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
     private TextInputEditText courseTermIdView;
     private  static EditText courseStartDateView;
     private static EditText courseEndDateView;
+    private Spinner courseStatusSpinner;
 
     public static DatePickerDialogFragment mDatePickerDialogFragment;
     private AppRepository appRepository;
@@ -50,16 +59,16 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
         ImageView courseStartCalendar = findViewById(R.id.courseStartCalendar);
         ImageView courseEndCalendar = findViewById(R.id.courseEndCalendar);
         Button saveButton = findViewById(R.id.saveCourse);
+        courseStatusSpinner = findViewById(R.id.courseStatusSpinner);
 
         //Date Picker Dialog
         mDatePickerDialogFragment = new DatePickerDialogFragment();
 
-        int courseId = getIntent().getIntExtra("courseID", -1);
+        courseId = getIntent().getIntExtra("courseId", -1);
         String courseTitle = getIntent().getStringExtra("courseTitle");
         String courseStartDate = getIntent().getStringExtra("courseStartDate");
-        System.out.println("Course Start: " +courseStartDate);
         String courseEndDate = getIntent().getStringExtra("courseEndDate");
-        System.out.println("Course End: " +courseEndDate);
+        String courseStatus = getIntent().getStringExtra("courseStatus");
         int associatedTermId = getIntent().getIntExtra("currentTermId", -1);
         courseTermIdView.setText(String.valueOf(associatedTermId));
 
@@ -68,6 +77,24 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
             courseStartDateView.setText(courseStartDate);
             courseEndDateView.setText(courseEndDate);
         }
+        //Spinner setup
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            List<String> statusList = Arrays.asList("Please Select", "in progress", "completed", "dropped", "plan to take");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.status_list_item, R.id.statusListItem, statusList);
+            courseStatusSpinner.setAdapter(adapter);
+            //If the course already has a course instructor set drop down to that course instructor
+            if (courseId != -1) {
+                int arrayPosition = 0;
+                for (String s : statusList) {
+                    if (s.equalsIgnoreCase(courseStatus)) {
+                        courseStatusSpinner.setSelection(arrayPosition);
+                        break;
+                    } else
+                        arrayPosition++;
+                }
+            }
+        });
         //Set On Click Listeners
         courseStartDateView.setOnClickListener(this);
         courseStartCalendar.setOnClickListener(this);
@@ -88,9 +115,9 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
         }else if (id == R.id.saveCourse) {
             Course course;
             if (courseId == -1) {
-                course = new Course(Objects.requireNonNull(courseTitleView.getText()).toString(), courseStartDateView.getText().toString(), courseEndDateView.getText().toString(), Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
+                course = new Course(Objects.requireNonNull(courseTitleView.getText()).toString(), courseStartDateView.getText().toString(), courseEndDateView.getText().toString(), courseStatusSpinner.getSelectedItem().toString(), Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
             } else {
-                course = new Course(courseId, Objects.requireNonNull(courseTitleView.getText()).toString(), courseStartDateView.getText().toString(), courseEndDateView.getText().toString(), Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
+                course = new Course(courseId, Objects.requireNonNull(courseTitleView.getText()).toString(), courseStartDateView.getText().toString(), courseEndDateView.getText().toString(), courseStatusSpinner.getSelectedItem().toString(), Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
             }
             if(!course.getTitle().isEmpty()) {
                 appRepository.insertCourse(course);

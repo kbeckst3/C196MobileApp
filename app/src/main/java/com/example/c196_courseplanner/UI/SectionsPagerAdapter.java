@@ -33,9 +33,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // Return a PlaceholderFragment (defined as a static inner class below).
         switch (position) {
             case 0:
-                return new PlaceholderFragment();
+                return new CourseInfoFragment(mContext);
             case 1:
-                return new PlaceholderFragment();
+                return new AssessmentsFragment(mContext);
             default:
                 throw new IllegalStateException("Unexpected value: " + position);
         }
