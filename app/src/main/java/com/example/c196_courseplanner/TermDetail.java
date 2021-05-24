@@ -1,5 +1,7 @@
 package com.example.c196_courseplanner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -10,17 +12,23 @@ import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.c196_courseplanner.Models.Course;
 import com.example.c196_courseplanner.Models.Term;
 import com.example.c196_courseplanner.database.AppRepository;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class TermDetail extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,6 +40,7 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
 
     public static DatePickerDialogFragment mDatePickerDialogFragment;
     private AppRepository appRepository;
+    private final ArrayList<Course> coursesInTerm = new ArrayList<>();
 
     //Variable used for editing a term
     private int termID;
@@ -50,26 +59,33 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
         ImageView termStartCalendar = findViewById(R.id.termStartCalendar);
         ImageView termEndCalendar = findViewById(R.id.termEndCalendar);
         Button termSaveButton = findViewById(R.id.saveTerm);
+        Button termDeleteButton = findViewById(R.id.deleteTerm);
         mDatePickerDialogFragment = new DatePickerDialogFragment();
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            coursesInTerm.addAll(appRepository.getAllCourseByTermID(termID));
+        });
+
+        //Grabbing intent Extras for editing Term
+        termID = getIntent().getIntExtra("termId", -1);
+        String termTitle = getIntent().getStringExtra("termTitle");
+        String termStartDate = getIntent().getStringExtra("termStartDate");
+        String termEndDate = getIntent().getStringExtra("termEndDate");
+
+        if (termID != -1) {
+            termTitleView.setText(termTitle);
+            termStartDateView.setText(termStartDate);
+            termEditDateView.setText(termEndDate);
+        }
+
         //Set On Click Listeners
         termStartDateView.setOnClickListener(this);
         termStartCalendar.setOnClickListener(this);
         termEditDateView.setOnClickListener(this);
         termEndCalendar.setOnClickListener(this);
         termSaveButton.setOnClickListener(this);
-
-        //Grabbing intent Extras for editing Term
-        termID = getIntent().getIntExtra("termID", -1);
-        String termTitle = getIntent().getStringExtra("termTitle");
-        String termStartDate = getIntent().getStringExtra("termStartDate");
-        String termEndDate = getIntent().getStringExtra("termEndDate");
-
-        if(termID != -1)
-        {
-            termTitleView.setText(termTitle);
-            termStartDateView.setText(termStartDate);
-            termEditDateView.setText(termEndDate);
-        }
+        termDeleteButton.setOnClickListener(this);
 
     }
 
@@ -85,15 +101,30 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
         } else if (id == R.id.saveTerm) {
             Term mTerm;
             if (termID == -1) {
-                 mTerm = new Term(Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
+                mTerm = new Term(Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
             } else {
-                 mTerm = new Term(termID, Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
+                mTerm = new Term(termID, Objects.requireNonNull(termTitleView.getText()).toString(), termStartDateView.getText().toString(), termEditDateView.getText().toString());
             }
-            if(!mTerm.getTitle().isEmpty()) {
+            if (!mTerm.getTitle().isEmpty()) {
                 appRepository.insertTerm(mTerm);
             }
             Intent intent = new Intent(TermDetail.this, TermActivity.class);
             startActivity(intent);
+        } else if (id == R.id.deleteTerm) {
+                if (coursesInTerm.isEmpty()) {
+                    appRepository.deleteTermById(termID);
+                    Intent intent = new Intent(TermDetail.this, TermActivity.class);
+                    startActivity(intent);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TermDetail.this);
+                    builder.setMessage("Must delete courses in term first").setPositiveButton("OK", (dialog, id1) -> {
+                        System.out.println("course not being deleted.");
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+
         }
     }
 
@@ -104,6 +135,7 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
 
         private int flag = 0;
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Calendar calendar = Calendar.getInstance();
@@ -122,7 +154,7 @@ public class TermDetail extends AppCompatActivity implements View.OnClickListene
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             if (flag == FLAG_START_DATE) {
                 termStartDateView.setText(format.format(calendar.getTime()));
             } else if (flag == FLAG_END_DATE) {

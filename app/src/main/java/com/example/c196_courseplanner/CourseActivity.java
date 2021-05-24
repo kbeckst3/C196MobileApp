@@ -28,11 +28,9 @@ public class CourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         //Get Intent extras
-        currentTermId = getIntent().getIntExtra("termID", -1);
+        currentTermId = getIntent().getIntExtra("termId", -1);
 
         FloatingActionButton fab = findViewById(R.id.courseAdder);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +53,7 @@ public class CourseActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             if (mCourses != null)
                 adapter.setCourses(appRepository.getAllCourseByTermID(currentTermId));
+
         });
     }
 }

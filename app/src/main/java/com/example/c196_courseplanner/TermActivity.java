@@ -3,6 +3,7 @@ package com.example.c196_courseplanner;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.c196_courseplanner.Models.Term;
 import com.example.c196_courseplanner.UI.TermAdapter;
 import com.example.c196_courseplanner.database.AppRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class TermActivity extends AppCompatActivity {
 
     private AppRepository appRepository;
+    private ArrayList<Term> terms = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +42,17 @@ public class TermActivity extends AppCompatActivity {
             }
         });
 
+        RecyclerView recyclerView = findViewById(R.id.termRecyclerView);
+        final TermAdapter adapter = new TermAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         appRepository = new AppRepository(getApplicationContext());
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            RecyclerView recyclerView = findViewById(R.id.termRecyclerView);
-            final TermAdapter adapter = new TermAdapter(this);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            adapter.setTerms(appRepository.getAllTerms());
+            terms.addAll(appRepository.getAllTerms());
         });
+
+        adapter.setTerms(terms);
     }
 }

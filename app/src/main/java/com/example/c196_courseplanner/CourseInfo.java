@@ -2,6 +2,7 @@ package com.example.c196_courseplanner;
 
 import android.os.Bundle;
 
+import com.example.c196_courseplanner.Models.Course;
 import com.example.c196_courseplanner.database.AppRepository;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,15 +36,19 @@ public class CourseInfo extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        appRepository = new AppRepository(getApplicationContext());
+        courseId = getIntent().getIntExtra("courseId", -1);
+
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-        });
+            Course course = appRepository.getCourseById(courseId);
 
-        courseId = getIntent().getIntExtra("courseId", -1);
-        courseTitle = getIntent().getStringExtra("courseTitle");
-        currentCourseStatus = getIntent().getStringExtra("courseStatus");
-        currentCourseStart = getIntent().getStringExtra("courseStartDate");
-        currentCourseEnd = getIntent().getStringExtra("courseEndDate");
+            courseTitle = course.getTitle();
+            currentCourseStatus = course.getStatus();
+            currentCourseStart = course.getStartDate();
+            currentCourseEnd = course.getEndDate();
+
+        });
 
     }
 

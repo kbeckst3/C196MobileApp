@@ -27,6 +27,9 @@ public interface CourseNoteEntityDAO {
     @Delete
     void deleteCourseNote(CourseNote courseNote);
 
+    @Query("Delete From course_note_table Where id = :id")
+    void deleteCourseNoteById(int id);
+
     @Query("Delete From course_note_table")
     void deleteAllCoursesNotes();
 }

@@ -25,6 +25,9 @@ public interface TermEntityDAO {
     @Delete
     void deleteTerm(Term term);
 
+    @Query("Delete From term_table Where id = :id")
+    void deleteTermById(int id);
+
     @Query("Delete From term_table")
     void deleteAllTerms();
 }

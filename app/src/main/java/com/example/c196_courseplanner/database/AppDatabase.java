@@ -19,7 +19,7 @@ import com.example.c196_courseplanner.Models.CourseNote;
 import com.example.c196_courseplanner.Models.Term;
 
 
-@Database(entities = {Assessment.class, Course.class, CourseInstructor.class, CourseNote.class, Term.class}, version = 4, exportSchema = false)
+@Database(entities = {Assessment.class, Course.class, CourseInstructor.class, CourseNote.class, Term.class}, version = 7)
 public abstract class AppDatabase extends RoomDatabase {
     //Program DAOs
     public abstract AssessmentEntityDAO assessmentEntityDAO();
@@ -30,7 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
-    private static final String DB_NAME = "CoursePlanner_db";
+    private static final String DB_NAME = "CoursePlanner.db";
     private static volatile AppDatabase instance;
 
     public static synchronized AppDatabase getInstance(Context context) {

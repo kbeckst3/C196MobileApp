@@ -1,5 +1,6 @@
 package com.example.c196_courseplanner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -43,6 +44,7 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
 
     //Id for editing course
     private int courseId;
+    private int associatedTermId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
         ImageView courseStartCalendar = findViewById(R.id.courseStartCalendar);
         ImageView courseEndCalendar = findViewById(R.id.courseEndCalendar);
         Button saveButton = findViewById(R.id.saveCourse);
+        Button deleteButton = findViewById(R.id.deleteCourse);
         courseStatusSpinner = findViewById(R.id.courseStatusSpinner);
 
         //Date Picker Dialog
@@ -69,7 +72,7 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
         String courseStartDate = getIntent().getStringExtra("courseStartDate");
         String courseEndDate = getIntent().getStringExtra("courseEndDate");
         String courseStatus = getIntent().getStringExtra("courseStatus");
-        int associatedTermId = getIntent().getIntExtra("currentTermId", -1);
+        associatedTermId = getIntent().getIntExtra("currentTermId", -1);
         courseTermIdView.setText(String.valueOf(associatedTermId));
 
         if(courseId != -1){
@@ -101,6 +104,7 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
         courseEndDateView.setOnClickListener(this);
         courseEndCalendar.setOnClickListener(this);
         saveButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
 
     }
     @Override
@@ -123,8 +127,22 @@ public class CourseDetail extends AppCompatActivity implements View.OnClickListe
                 appRepository.insertCourse(course);
             }
             Intent intent = new Intent(CourseDetail.this, CourseActivity.class);
-            intent.putExtra("termID", Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
+            intent.putExtra("termId", Integer.parseInt(Objects.requireNonNull(courseTermIdView.getText()).toString()));
             startActivity(intent);
+        }else if (id == R.id.deleteCourse){
+            AlertDialog.Builder builder = new AlertDialog.Builder(CourseDetail.this);
+            builder.setMessage("Are you sure you want to DELETE the course?\n" +
+                    " Deleting the course will delete associated assessments & notes")
+                    .setPositiveButton("Delete", (dialog, id1) -> {
+                        appRepository.deleteCourseById(courseId);
+                        Intent intent = new Intent(CourseDetail.this, CourseActivity.class);
+                        intent.putExtra("termId", associatedTermId);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", (dialog, id12) -> System.out.println("not deleting"));
+            // Create the AlertDialog object and return it
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
     }
 

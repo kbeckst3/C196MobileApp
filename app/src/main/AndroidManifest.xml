@@ -9,12 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.C196CoursePlanner">
-        <activity android:name=".AssessmentDetail"></activity>
-        <activity android:name=".CourseNoteDetail" />
-        <activity
-            android:name=".CourseInfo"
-            android:label="@string/title_activity_course_info"
-            android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
+        <receiver
+            android:name=".utilities.MyReceiver"
+            android:enabled="true"
+            android:exported="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,9 +32,23 @@
         <activity
             android:name=".CourseActivity"
             android:label="@string/title_activity_course"
+            android:launchMode="singleTop"
             android:parentActivityName=".TermActivity"
-            android:theme="@style/Theme.C196CoursePlanner.NoActionBar" />
-        <activity android:name=".CourseDetail" />
+            />
+        <activity
+            android:name=".CourseDetail"
+            android:parentActivityName=".CourseActivity"/>
+        <activity
+            android:name=".CourseInfo"
+            android:parentActivityName=".CourseActivity"
+            android:label="@string/title_activity_course_info"
+             />
+        <activity
+            android:parentActivityName=".CourseInfo"
+            android:name=".AssessmentDetail" />
+        <activity
+            android:parentActivityName=".CourseInfo"
+            android:name=".CourseNoteDetail" />
     </application>
 
 </manifest>

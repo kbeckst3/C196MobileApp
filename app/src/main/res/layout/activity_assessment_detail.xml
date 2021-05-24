@@ -14,8 +14,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/assessmentDetailTitle"
@@ -45,6 +47,7 @@
             android:hint="Assessment Details...">
 
         </EditText>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,15 +60,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:textSize="18sp"
-                android:text="Assessment Type" />
+                android:text="Assessment Type"
+                android:textSize="16sp" />
+
             <Spinner
                 android:id="@+id/assessmentTypeSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_weight="5" />
+                android:layout_weight="5"
+                android:textSize="18sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,12 +119,27 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/saveAssessment"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Save" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/saveAssessment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/deleteAssessment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Delete" />
+
+        </LinearLayout>
 
 
-    </LinearLayout></androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

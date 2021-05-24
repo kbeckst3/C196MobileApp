@@ -2,10 +2,15 @@ package com.example.c196_courseplanner.Models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "assessment_table")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "assessment_table", foreignKeys = { @ForeignKey(onDelete = CASCADE, entity = Course.class, parentColumns = "id", childColumns = "associated_course_id")},
+        indices ={ @Index("associated_course_id")})
 public class Assessment {
     @PrimaryKey(autoGenerate = true)
     private int id;

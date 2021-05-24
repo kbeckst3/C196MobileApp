@@ -13,8 +13,6 @@ import java.util.List;
 
 @Dao
 public interface AssessmentEntityDAO {
-    @Query("Select * from assessment_table Order By id Asc")
-    List<Assessment> getAllAssessments();
 
     @Query("Select * From assessment_table Where id = :id")
     Assessment getAssessmentById(int id);
@@ -25,8 +23,9 @@ public interface AssessmentEntityDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAssessment(Assessment assessment);
 
-    @Delete
-    void deleteAssessment(Assessment assessment);
+
+    @Query("Delete From assessment_table Where id = :id")
+    void deleteAssessmentById(int id);
 
     @Query("Delete From assessment_table")
     void deleteAllAssessments();

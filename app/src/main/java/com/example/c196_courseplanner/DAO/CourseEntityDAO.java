@@ -25,8 +25,8 @@ public interface CourseEntityDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCourse(Course course);
 
-    @Delete
-    void deleteCourse(Course course);
+    @Query("Delete From course_table Where id = :id ")
+    void deleteCourseById(int id);
 
     @Query("Delete From course_table")
     void deleteAllCourses();

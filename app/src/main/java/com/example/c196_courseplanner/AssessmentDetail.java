@@ -1,8 +1,11 @@
 package com.example.c196_courseplanner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -28,17 +31,19 @@ import java.util.concurrent.Executors;
 
 public class AssessmentDetail extends AppCompatActivity implements View.OnClickListener {
 
-    private int assessmentId;
+    private static int assessmentId;
     private TextInputEditText assessmentTitleView;
     private EditText assessmentInfoView;
+    @SuppressLint("StaticFieldLeak")
     private static EditText assessmentStartDateView;
+    @SuppressLint("StaticFieldLeak")
     private static EditText assessmentEndDateView;
     private Spinner assessmentTypeSpinner;
 
     public static DatePickerDialogFragment mDatePickerDialogFragment;
     private AppRepository appRepository;
 
-    //Id for editing course
+    //Id for going back to the correct course
     private int courseId;
 
     @Override
@@ -56,6 +61,7 @@ public class AssessmentDetail extends AppCompatActivity implements View.OnClickL
         ImageView assessmentStartCalendar = findViewById(R.id.assessmentStartCalendar);
         ImageView assessmentEndCalendar = findViewById(R.id.assessmentEndCalendar);
         Button saveButton = findViewById(R.id.saveAssessment);
+        Button deleteButton = findViewById(R.id.deleteAssessment);
         assessmentTypeSpinner = findViewById(R.id.assessmentTypeSpinner);
 
         //Date Picker Dialog
@@ -100,6 +106,8 @@ public class AssessmentDetail extends AppCompatActivity implements View.OnClickL
         assessmentEndDateView.setOnClickListener(this);
         assessmentEndCalendar.setOnClickListener(this);
         saveButton.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
+
 
     }
 
@@ -125,6 +133,19 @@ public class AssessmentDetail extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(AssessmentDetail.this, CourseInfo.class);
             intent.putExtra("courseId", courseId);
             startActivity(intent);
+        }else if(id == R.id.deleteAssessment){
+            AlertDialog.Builder builder = new AlertDialog.Builder(AssessmentDetail.this);
+            builder.setMessage("Are you sure you want to DELETE the assessment?")
+                    .setPositiveButton("Delete", (dialog, id1) -> {
+                        appRepository.deleteAssessmentById(assessmentId);
+                        Intent intent = new Intent(AssessmentDetail.this, CourseInfo.class);
+                        intent.putExtra("courseId", courseId);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", (dialog, id12) -> System.out.println("not deleting"));
+            // Create the AlertDialog object and return it
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
     }
 
@@ -135,6 +156,7 @@ public class AssessmentDetail extends AppCompatActivity implements View.OnClickL
 
         private int flag = 0;
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Calendar calendar = Calendar.getInstance();
@@ -153,7 +175,7 @@ public class AssessmentDetail extends AppCompatActivity implements View.OnClickL
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             if (flag == FLAG_START_DATE) {
                 assessmentStartDateView.setText(format.format(calendar.getTime()));
             } else if (flag == FLAG_END_DATE) {

@@ -1,7 +1,9 @@
 package com.example.c196_courseplanner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,5 +53,35 @@ public class CourseNoteDetail extends AppCompatActivity {
         appRepository.insertCourseNote(courseNote);
         startActivity(intent);
 
+    }
+    public void deleteCourseNote(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CourseNoteDetail.this);
+        builder.setMessage("Are you sure you want to DELETE this course note?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        appRepository.deleteCourseNoteById(courseNoteId);
+                        Intent intent = new Intent(CourseNoteDetail.this, CourseInfo.class);
+                        intent.putExtra("courseId", courseId);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        System.out.println("not deleting");
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    public void shareCourseNote(View view){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, courseNoteView.getText().toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE,  "Course Note");
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, "Sharing Course Note");
+        startActivity(shareIntent);
     }
 }

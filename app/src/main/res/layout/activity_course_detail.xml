@@ -49,7 +49,8 @@
                 android:enabled="false"
                 android:focusable="false"
                 android:hint="Current Term" />
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,70 +63,84 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:textSize="18sp"
-                android:text="Course Status" />
+                android:text="Course Status"
+                android:textSize="18sp" />
+
             <Spinner
                 android:id="@+id/courseStatusSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_weight="5" />
+                android:layout_weight="5"
+                android:textSize="18sp" />
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/courseStartCalendar"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            app:srcCompat="@drawable/ic_calendar_picker_foreground" />
-
-        <EditText
-            android:id="@+id/courseStartField"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:focusable="false"
-            android:hint="Start Date"
-            android:inputType="date" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/courseStartCalendar"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/ic_calendar_picker_foreground" />
+
+            <EditText
+                android:id="@+id/courseStartField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:focusable="false"
+                android:hint="Start Date"
+                android:inputType="date" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/courseEndCalendar"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/ic_calendar_picker_foreground" />
+
+            <EditText
+                android:id="@+id/courseEndField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:focusable="false"
+                android:hint="End Date"
+                android:inputType="date" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/saveCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/deleteCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Delete" />
+        </LinearLayout>
+
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/courseEndCalendar"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            app:srcCompat="@drawable/ic_calendar_picker_foreground" />
-
-        <EditText
-            android:id="@+id/courseEndField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:focusable="false"
-            android:hint="End Date"
-            android:inputType="date" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/saveCourse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Save" />
-    <!--            android:onClick="saveTerm"-->
-
-
-</LinearLayout></androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

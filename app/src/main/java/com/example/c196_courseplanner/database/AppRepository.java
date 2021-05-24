@@ -28,9 +28,6 @@ public class AppRepository {
     /*
      * Assessment DAO functionality
      */
-    public List<Assessment> getAllAssessments() {
-        return appDatabase.assessmentEntityDAO().getAllAssessments();
-    }
 
     public List<Assessment> getAllAssessmentsByCourse(int id) {
         return appDatabase.assessmentEntityDAO().getAllAssessmentsByCourseId(id);
@@ -44,12 +41,12 @@ public class AppRepository {
         executor.execute(() -> appDatabase.assessmentEntityDAO().insertAssessment(assessment));
     }
 
-    public void deleteAssessment(Assessment assessment) {
-        executor.execute(() -> appDatabase.assessmentEntityDAO().deleteAssessment(assessment));
-    }
-
     public void deleteAllAssessments() {
         executor.execute(() -> appDatabase.assessmentEntityDAO().deleteAllAssessments());
+    }
+
+    public void deleteAssessmentById(int id) {
+        executor.execute(() -> appDatabase.assessmentEntityDAO().deleteAssessmentById(id));
     }
 
     /*
@@ -75,8 +72,8 @@ public class AppRepository {
         executor.execute(() -> appDatabase.courseEntityDAO().addCourseInstructorToCourse(courseInstructorId, courseId));
     }
 
-    public void deleteCourse(Course course) {
-        executor.execute(() -> appDatabase.courseEntityDAO().deleteCourse(course));
+    public void deleteCourseById(int id) {
+        executor.execute(() -> appDatabase.courseEntityDAO().deleteCourseById(id));
     }
 
     public void deleteAllCourses() {
@@ -125,8 +122,8 @@ public class AppRepository {
         executor.execute(() -> appDatabase.courseNoteEntityDAO().insertCourseNote(courseNote));
     }
 
-    public void deleteCourseNote(CourseNote courseNote) {
-        executor.execute(() -> appDatabase.courseNoteEntityDAO().deleteCourseNote(courseNote));
+    public void deleteCourseNoteById(int id) {
+        executor.execute(() -> appDatabase.courseNoteEntityDAO().deleteCourseNoteById(id));
     }
 
     public void deleteAllCourseNotes(){
@@ -150,6 +147,10 @@ public class AppRepository {
 
     public void deleteTerm(Term term) {
         executor.execute(() -> appDatabase.termEntityDAO().deleteTerm(term));
+    }
+
+    public void deleteTermById(int id) {
+        executor.execute(() -> appDatabase.termEntityDAO().deleteTermById(id));
     }
 
     public void deleteAllTerms() {
